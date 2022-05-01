@@ -1,18 +1,93 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="part1">
+      <h1>文案基于什么 的文案基于什么 的</h1>
+      <p>文案的内容此处一万字文案的内容此处一万字文案的内容此处一万字</p>
+      <div class="btn-group">
+        <div class="btn-1">累计投入总量</div>
+        <div class="btn-1">累计参与人数</div>
+      </div>
+    </div>
+    <div class="part2">
+      <div class="title">应用两点</div>
+      <div class="content">
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+
+        <div class="safe">安全</div>
+      </div>
+    </div>
+    <div class="part3"></div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
+  name: 'HomeView'
 }
 </script>
+<style lang="scss" scoped>
+.home {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  .part1 {
+    width: 80%;
+    margin: 0 auto;
+    h1 {
+      text-align: center;
+      font-size: 28px;
+    }
+    p {
+      text-align: center;
+      font-size: 16px;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      > div {
+        font-size: 20px;
+        color: #e5cec2;
+        line-height: 1;
+        text-align: center;
+        padding: 15px 30px;
+        height: 52px;
+        box-sizing: border-box;
+        border: 1px solid #a7a7a7;
+        border-radius: 4px;
+      }
+    }
+  }
+  .part2 {
+    .title {
+      font-size: 20px;
+    }
+    .content {
+      ul {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0;
+        li {
+          width: 258px;
+          height: 294px;
+          background: #ccc;
+          list-style: none;
+          font-size: 20px;
+        }
+      }
+    }
+    .safe {
+      text-align: center;
+    }
+  }
+  .part3 {
+    height: 300px;
+    background: #ccc;
+  }
+}
+</style>

@@ -1,20 +1,32 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <Header></Header>
+    <router-view />
+    <FooterBar />
   </div>
 </template>
-
+<script>
+import Header from '@/components/HeaderBar.vue'
+import FooterBar from '@/components/FooterBar.vue'
+export default {
+  name: 'app',
+  components: {
+    Header,
+    FooterBar
+  }
+}
+</script>
 <style lang="scss">
+html,
+body {
+  background: #000000;
+  padding: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  color: #e5cec2;
 }
 
 nav {
