@@ -14,13 +14,15 @@
           0bets
         </div>
         <div class="btns">
-          <div class="btn" v-for="i in 4" :key="i">{{ i }}</div>
+          <div class="btn" v-for="i in 4" :key="i" @click="value = i">
+            {{ i }}USDT
+          </div>
         </div>
         <div class="input">
-          <input type="text" />
-          <p>your amout</p>
+          <input type="text" :max="Balance" :value="value" />
+          <p>your amout：{{ Balance }}</p>
         </div>
-        <div v-if="allowance.toNumber()" class="datemine" @click="approveFc">
+        <div v-if="!allowance.toNumber()" class="datemine" @click="approveFc">
           datemine
         </div>
         <div v-else class="datemine" @click="depositFc">
@@ -51,7 +53,8 @@ export default {
   data () {
     return {
       allowance: new BigNumber(0),
-      Balance: ''
+      Balance: '',
+      value: 0
     }
   },
   computed: {
@@ -59,11 +62,13 @@ export default {
   },
   mounted () {
     getAllowance(this.address, allowance => {
-      this.allowance = allowance
+      this.$set(this, 'allowance', allowance)
     })
     getBalance(this.address, Balance => {
-      this.Balance = Balance
-      console.log(Balance.toString())
+      let newBalance = new BigNumber(Balance)
+        .div(new BigNumber(10).pow(6))
+        .toString()
+      this.$set(this, 'Balance', newBalance)
     })
   },
   methods: {
@@ -129,10 +134,13 @@ export default {
       }
       .input {
         input {
-          border: 1px solid #e5d7c2;
+          border: 2px solid #fff;
           border-radius: 6px;
           width: 269px;
           height: 55px;
+          background: transparent;
+          color: #fff;
+          font-size: 22px;
         }
       }
       .datemine {
@@ -176,6 +184,32 @@ export default {
           font-size: 18px;
         }
       }
+    }
+  }
+}
+@media screen and (max-width: 750px) {
+  .application {
+    .app1 {
+      flex-direction: column;
+      .left {
+        width: 100%;
+        .item {
+          width: 48%;
+          height: 48vw;
+        }
+      }
+      .right {
+        .btns {
+          flex-wrap: wrap;
+          width: 90%;
+        }
+        .datemine {
+          width: 90%;
+        }
+      }
+    }
+    .app2 {
+      margin-top: 20px;
     }
   }
 }

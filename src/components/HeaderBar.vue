@@ -44,7 +44,6 @@ export default {
   },
   mounted () {
     this.get()
-    console.log(this.IsMobile)
   },
   methods: {
     ...mapMutations(['SET_ADDRESS']),
@@ -90,8 +89,13 @@ export default {
   font-size: 20px;
   color: #e5cec2;
   padding: 20px;
-  .active {
-    color: #fff;
+  nav {
+    a {
+      text-decoration: none;
+      .active {
+        color: #ccc;
+      }
+    }
   }
 }
 .hidden {
@@ -121,6 +125,11 @@ export default {
     height: 100%;
     background: #fff;
     padding: 30px;
+    display: flex;
+    flex-direction: column;
+    a {
+      color: #000;
+    }
   }
 }
 </style>

@@ -32,9 +32,7 @@ export const approve = (account, callback) => {
 export const getAllowance = (account, callback) => {
   try {
     tokenUsdtCont.allowance(account, bigWinCont.address, (err, res) => {
-      console.log(err, res)
-      console.log(res.toString())
-      callback(new BigNumber(res))
+      callback(res)
     })
   } catch (e) {
     console.log(e)
