@@ -21,6 +21,7 @@ html,
 body {
   background: #000000;
   padding: 0;
+  margin: 0;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

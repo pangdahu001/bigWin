@@ -20,9 +20,14 @@
           <input type="text" />
           <p>your amout</p>
         </div>
-        <div class="datemine">
+        <div v-if="allowance.toNumber()" class="datemine" @click="approveFc">
           datemine
         </div>
+        <div v-else class="datemine" @click="depositFc">
+          deposit
+        </div>
+
+        <!-- <span>{{ allowance.toNumber() }}</span> -->
       </div>
     </div>
     <div class="app2">
@@ -36,6 +41,43 @@
     </div>
   </div>
 </template>
+
+<script>
+import { approve, getAllowance, getBalance, deposit } from '../abi/send'
+import { mapState } from 'vuex'
+import { BigNumber } from 'bignumber.js'
+
+export default {
+  data () {
+    return {
+      allowance: new BigNumber(0),
+      Balance: ''
+    }
+  },
+  computed: {
+    ...mapState(['address'])
+  },
+  mounted () {
+    getAllowance(this.address, allowance => {
+      this.allowance = allowance
+    })
+    getBalance(this.address, Balance => {
+      this.Balance = Balance
+      console.log(Balance.toString())
+    })
+  },
+  methods: {
+    approveFc () {
+      approve(this.address)
+    },
+    depositFc () {
+      deposit('1100', transactionHash => {
+        console.log(transactionHash)
+      })
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .application {

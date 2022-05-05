@@ -90,4 +90,10 @@ export default {
     background: #ccc;
   }
 }
+@media screen and (max-width: 750px) {
+  .home .part1 .btn-group > div {
+    font-size: 16px;
+    padding: 15px;
+  }
+}
 </style>

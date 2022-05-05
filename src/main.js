@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 import i18n from './i18n' //
 import './Element'
+import Web3 from 'web3'
+Vue.prototype.Web3 = Web3
 
 Vue.config.productionTip = false
 

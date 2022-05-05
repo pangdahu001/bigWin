@@ -5,13 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    address: ''
   },
-  getters: {
-  },
+  getters: {},
   mutations: {
+    SET_ADDRESS: (state, address) => {
+      state.address = address
+    }
   },
-  actions: {
-  },
-  modules: {
-  }
+  actions: {},
+  modules: {}
 })
