@@ -19,21 +19,24 @@
       <span>中文</span>
       <span>English</span>
     </div>
-    <div class="username" v-if="account">
+    <WalletConnect />
+    <!-- <div class="username" v-if="account">
       {{
         account.substring(0, 8) +
           '...' +
           account.substring(account.length - 6, account.length)
       }}
     </div>
-    <div class="connect" v-else @click="get">连接钱包</div>
+    <div class="connect" v-else @click="get">连接钱包</div> -->
   </div>
 </template>
 
 <script>
-import { initWeb3Account } from '../abi/web3'
+// import { initWeb3Account } from '../abi/web3'
 import { IsMobile } from '../util'
 import { mapMutations } from 'vuex'
+import WalletConnect from '@/components/WalletConnect.vue'
+
 export default {
   data () {
     return {
@@ -42,31 +45,18 @@ export default {
       account: ''
     }
   },
+  components: { WalletConnect },
   mounted () {
-    this.get()
+    // this.get()
   },
   methods: {
     ...mapMutations(['SET_ADDRESS']),
     get () {
-      if (window.ethereum) {
-        initWeb3Account((provider, web3, account) => {
-          console.log(provider, web3, account)
-          this.account = account
-          this.SET_ADDRESS(account)
-        })
-        // window.ethereum.enable().then(res => {
-        //   alert('当前钱包地址:' + res[0])
-        //   let web3 = new Web3(window.web3.currentProvider)
-        //   let fromAddress = web3.eth.accounts[0]
-        //   web3.eth.getBalance(fromAddress, (err, res) => {
-        //     if (!err) {
-        //       console.log('ETH余额==', res.toNumber() / Math.pow(10, 18))
-        //     }
-        //   })
-        // })
-      } else {
-        alert('请安装MetaMask钱包')
-      }
+      // initWeb3Account((provider, web3, account) => {
+      //   console.log(provider, web3, account)
+      //   this.account = account
+      //   this.SET_ADDRESS(account)
+      // })
     },
     showMenu () {
       this.moblieMenu = !this.moblieMenu

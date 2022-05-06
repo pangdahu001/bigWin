@@ -18,7 +18,8 @@ module.exports = defineConfig({
         stream: require.resolve('stream-browserify'),
         os: require.resolve('os-browserify/browser'),
         url: require.resolve('url'),
-        assert: require.resolve('assert')
+        assert: require.resolve('assert'),
+        util: require.resolve('util')
       }
     }
   }

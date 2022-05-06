@@ -12,9 +12,11 @@
       <div class="title">应用两点</div>
       <div class="content">
         <ul>
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
+          <li>
+            <img src="@/assets/1.png" alt="" srcset="" />
+          </li>
+          <li><img src="@/assets/2.png" alt="" srcset="" /></li>
+          <li><img src="@/assets/3.png" alt="" srcset="" /></li>
         </ul>
 
         <div class="safe">安全</div>
@@ -35,8 +37,11 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   .part1 {
-    width: 80%;
+    width: 100%;
+    // padding: 0 10%;
     margin: 0 auto;
+    background: url('~@/assets/plat.png') no-repeat center bottom;
+    height: 400px;
     h1 {
       text-align: center;
       font-size: 28px;
@@ -49,6 +54,8 @@ export default {
       display: flex;
       justify-content: space-around;
       align-items: center;
+      width: 672px;
+      margin: 0 auto;
       > div {
         font-size: 20px;
         color: #e5cec2;
@@ -63,6 +70,7 @@ export default {
     }
   }
   .part2 {
+    margin-top: -20px;
     .title {
       font-size: 20px;
     }
@@ -73,9 +81,9 @@ export default {
         align-items: flex-start;
         padding: 0;
         li {
-          width: 258px;
-          height: 294px;
-          background: #ccc;
+          width: 301px;
+          height: 353px;
+          // background: #ccc;
           list-style: none;
           font-size: 20px;
         }
