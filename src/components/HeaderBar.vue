@@ -6,35 +6,34 @@
       @click="hiddenMenu"
     >
       <nav>
-        <router-link active-class="active" to="/">首页</router-link>
-        <router-link active-class="active" to="/application">应用</router-link>
-        <router-link active-class="active" to="/application">规则</router-link>
+        <router-link to="/">首页</router-link>
+        <router-link to="/application">应用</router-link>
+        <!-- <router-link to="/application">规则</router-link> -->
       </nav>
     </div>
 
     <div v-if="IsMobile" class="moblie-menu" @click="showMenu">
       <i class="el-icon-s-fold"></i>
     </div>
-    <div class="lang">
-      <span>中文</span>
-      <span>English</span>
+    <div class="langContainer">
+      <div class="lang">
+        <el-select v-model="lang" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.name"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <WalletConnect />
     </div>
-    <WalletConnect />
-    <!-- <div class="username" v-if="account">
-      {{
-        account.substring(0, 8) +
-          '...' +
-          account.substring(account.length - 6, account.length)
-      }}
-    </div>
-    <div class="connect" v-else @click="get">连接钱包</div> -->
   </div>
 </template>
 
 <script>
-// import { initWeb3Account } from '../abi/web3'
 import { IsMobile } from '../util'
-import { mapMutations } from 'vuex'
 import WalletConnect from '@/components/WalletConnect.vue'
 
 export default {
@@ -42,22 +41,20 @@ export default {
     return {
       IsMobile: IsMobile(),
       moblieMenu: false,
-      account: ''
+      account: '',
+      lang: '',
+      options: [
+        {
+          name: '中文',
+          value: 'zh'
+        },
+        { name: 'English', value: 'en' }
+      ]
     }
   },
   components: { WalletConnect },
-  mounted () {
-    // this.get()
-  },
+  mounted () {},
   methods: {
-    ...mapMutations(['SET_ADDRESS']),
-    get () {
-      // initWeb3Account((provider, web3, account) => {
-      //   console.log(provider, web3, account)
-      //   this.account = account
-      //   this.SET_ADDRESS(account)
-      // })
-    },
     showMenu () {
       this.moblieMenu = !this.moblieMenu
     },
@@ -79,13 +76,29 @@ export default {
   font-size: 20px;
   color: #e5cec2;
   padding: 20px;
+  position: relative;
+  z-index: 3;
   nav {
     a {
       text-decoration: none;
-      .active {
-        color: #ccc;
+      color: rgb(229 206 194 / 40%);
+      margin-right: 20px;
+      &.router-link-exact-active {
+        color: #e5cec2;
       }
     }
+  }
+}
+.langContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ::v-deep.el-select .el-input__inner {
+    background: transparent;
+    border-color: #e5cec2;
+  }
+  .lang {
+    margin-right: 10px;
   }
 }
 .hidden {

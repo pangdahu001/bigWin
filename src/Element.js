@@ -82,6 +82,7 @@ import {
   Message,
   Notification
 } from 'element-ui'
+import './style/element-variables.scss'
 
 // Vue.use(Pagination)
 // Vue.use(Dialog)
@@ -105,8 +106,8 @@ import {
 // Vue.use(CheckboxButton)
 // Vue.use(CheckboxGroup)
 // Vue.use(Switch)
-// Vue.use(Select)
-// Vue.use(Option)
+Vue.use(Select)
+Vue.use(Option)
 // // Vue.use(OptionGroup);
 // Vue.use(Button)
 // // Vue.use(ButtonGroup);

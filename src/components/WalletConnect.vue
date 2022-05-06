@@ -2,7 +2,13 @@
   <div>
     <div class="button-wallet">
       <button v-if="!isConnected" @click="connect">Connect Wallet</button>
-      <button v-else @click="disconnect">Disconnect wallet</button>
+      <button v-else @click="disconnect" title="点击断开连接">
+        {{
+          getAccount.substring(0, 8) +
+            '...' +
+            getAccount.substring(getAccount.length - 6, getAccount.length)
+        }}
+      </button>
     </div>
     <web3-modal-vue
       ref="web3modal"
@@ -14,48 +20,48 @@
 </template>
 
 <script>
-import Web3ModalVue from "web3modal-vue";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { mapGetters } from "vuex";
+import Web3ModalVue from 'web3modal-vue'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import { mapGetters } from 'vuex'
 export default {
-  name: "WalletConnect",
+  name: 'WalletConnect',
   components: {
-    Web3ModalVue,
+    Web3ModalVue
   },
-  data() {
+  data () {
     return {
-      theme: "light",
+      theme: 'light',
       providerOptions: {
         walletconnect: {
           package: WalletConnectProvider,
           options: {
-            infuraId: "-",
-          },
-        },
-      },
-    };
-  },
-  mounted() {
-    this.$nextTick(async () => {
-      const web3modal = this.$refs.web3modal;
-      this.$store.commit("setWeb3Modal", web3modal);
-      if (web3modal.cachedProvider) {
-        this.connect();
+            infuraId: '-'
+          }
+        }
       }
-    });
+    }
+  },
+  mounted () {
+    this.$nextTick(async () => {
+      const web3modal = this.$refs.web3modal
+      this.$store.commit('setWeb3Modal', web3modal)
+      if (web3modal.cachedProvider) {
+        this.connect()
+      }
+    })
   },
   computed: {
-    ...mapGetters(["getAccount", "isConnected"]),
+    ...mapGetters(['getAccount', 'isConnected'])
   },
   methods: {
-    connect() {
-      this.$store.dispatch("connect");
+    connect () {
+      this.$store.dispatch('connect')
     },
-    disconnect() {
-      this.$store.dispatch("resetApp");
-    },
-  },
-};
+    disconnect () {
+      this.$store.dispatch('resetApp')
+    }
+  }
+}
 </script>
 
 <style>
@@ -63,9 +69,9 @@ export default {
   padding: 0 16px;
   height: 36px;
   border-radius: 16px;
-  border: none;
-  background-color: rgb(31, 199, 212);
-  color: white;
+  background-color: transparent;
+  color: #e5cec2;
+  border: 1px solid #e5cec2;
   font-weight: bold;
   opacity: 1;
   font-size: 16px;

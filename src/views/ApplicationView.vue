@@ -8,27 +8,33 @@
         </div>
       </div>
       <div class="right">
-        <div class="title">ALL Wagers</div>
-        <div class="token">0 ETH</div>
-        <div class="bet">
-          0bets
-        </div>
-        <div class="btns">
-          <div class="btn" v-for="i in 4" :key="i" @click="value = i">
-            {{ i }}USDT
+        <div class="bigv"></div>
+        <div class="zindex3">
+          <div class="title">ALL Wagers</div>
+          <div class="token">0 ETH</div>
+          <div class="bet">
+            0bets
+          </div>
+          <div class="btns">
+            <div class="btn" v-for="i in 4" :key="i" @click="value = i">
+              {{ i }}USDT
+            </div>
+          </div>
+          <div class="input">
+            <input type="text" :max="getBalance" :value="value" />
+            <p>your amout：{{ getBalance }}</p>
+          </div>
+          <div
+            v-if="allowanceVal && !allowanceVal.toNumber()"
+            class="datemine"
+            @click="approveFc"
+          >
+            datemine
+          </div>
+          <div v-else class="datemine" @click="depositFc">
+            deposit
           </div>
         </div>
-        <div class="input">
-          <input type="text" :max="Balance" :value="value" />
-          <p>your amout：{{ Balance }}</p>
-        </div>
-        <div v-if="!allowance.toNumber()" class="datemine" @click="approveFc">
-          datemine
-        </div>
-        <div v-else class="datemine" @click="depositFc">
-          deposit
-        </div>
-
         <!-- <span>{{ allowance.toNumber() }}</span> -->
       </div>
     </div>
@@ -45,8 +51,8 @@
 </template>
 
 <script>
-import { approve, getAllowance, getBalance, deposit } from '../abi/send'
-import { mapState } from 'vuex'
+// import { approve, deposit } from '../abi/send'
+import { mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 
 export default {
@@ -58,27 +64,36 @@ export default {
     }
   },
   computed: {
-    ...mapState(['address'])
+    ...mapGetters(['getBalance', 'isConnected', 'allowanceVal'])
   },
   mounted () {
-    getAllowance(this.address, allowance => {
-      this.$set(this, 'allowance', allowance)
-    })
-    getBalance(this.address, Balance => {
-      let newBalance = new BigNumber(Balance)
-        .div(new BigNumber(10).pow(6))
-        .toString()
-      this.$set(this, 'Balance', newBalance)
-    })
+    // getAllowance(this.address, allowance => {
+    //   this.$set(this, 'allowance', allowance)
+    // })
+    // getBalance(this.address, Balance => {
+    //   let newBalance = new BigNumber(Balance)
+    //     .div(new BigNumber(10).pow(6))
+    //     .toString()
+    //   this.$set(this, 'Balance', newBalance)
+    // })
+  },
+  watch: {
+    isConnected (newVal) {
+      console.log(newVal)
+      this.$store.dispatch('getBalance')
+      this.$store.dispatch('getAllowance')
+    }
   },
   methods: {
     approveFc () {
-      approve(this.address)
+      // approve(this.address)
+      this.$store.dispatch('approve')
     },
     depositFc () {
-      deposit('1100', transactionHash => {
-        console.log(transactionHash)
-      })
+      // deposit('1100', transactionHash => {
+      //   console.log(transactionHash)
+      // })
+      this.$store.dispatch('deposit', this.value)
     }
   }
 }
@@ -99,12 +114,23 @@ export default {
       flex-wrap: wrap;
       .item {
         width: 240px;
-        height: 250px;
+        height: 184px;
         box-sizing: border-box;
         padding: 30px;
         text-align: center;
         background: #ccc;
         margin-bottom: 20px;
+        background: url('~@/assets/item.png') no-repeat center;
+        .title {
+          font-size: 20px;
+          color: #98623d;
+          margin-top: 10px;
+        }
+        .num {
+          font-size: 24px;
+          color: #97623d;
+          margin-top: 30px;
+        }
       }
     }
     .right {
@@ -112,6 +138,21 @@ export default {
       text-align: center;
       font-size: 20px;
       color: #e5d7c2;
+      position: relative;
+
+      .bigv {
+        position: absolute;
+        top: -154px;
+        right: 0;
+        width: 642px;
+        height: 707px;
+        background: url('~@/assets/bigV.png');
+        z-index: 0;
+      }
+      .zindex3 {
+        z-index: 1;
+        position: relative;
+      }
       .title {
       }
       .token {
@@ -123,7 +164,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         width: 515px;
-        margin: 55px auto 86px;
+        margin: 55px auto 147px;
         .btn {
           width: 110px;
           height: 46px;
@@ -151,7 +192,7 @@ export default {
         line-height: 59px;
         color: #494949;
         font-size: 26px;
-        margin: 60px auto 0;
+        margin: 30px auto 0;
       }
     }
   }
@@ -161,6 +202,7 @@ export default {
     border-radius: 20px;
     padding: 0 40px;
     overflow: hidden;
+    margin-top: 50px;
     .title {
       margin-top: 20px;
       height: 70px;

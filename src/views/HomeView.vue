@@ -3,9 +3,11 @@
     <div class="part1">
       <h1>文案基于什么 的文案基于什么 的</h1>
       <p>文案的内容此处一万字文案的内容此处一万字文案的内容此处一万字</p>
-      <div class="btn-group">
-        <div class="btn-1">累计投入总量</div>
-        <div class="btn-1">累计参与人数</div>
+      <div class="part1-bg">
+        <div class="btn-group">
+          <div class="btn-1">累计投入总量</div>
+          <div class="btn-1">累计参与人数</div>
+        </div>
       </div>
     </div>
     <div class="part2">
@@ -40,15 +42,20 @@ export default {
     width: 100%;
     // padding: 0 10%;
     margin: 0 auto;
-    background: url('~@/assets/plat.png') no-repeat center bottom;
-    height: 400px;
+
     h1 {
       text-align: center;
       font-size: 28px;
+      margin: 80px 0 50px;
     }
     p {
       text-align: center;
       font-size: 16px;
+      margin: 0px 0 50px;
+    }
+    .part1-bg {
+      background: url('~@/assets/plat.png') no-repeat center bottom;
+      height: 298px;
     }
     .btn-group {
       display: flex;
@@ -94,8 +101,11 @@ export default {
     }
   }
   .part3 {
-    height: 300px;
-    background: #ccc;
+    width: 100%;
+    height: 225px;
+    background: rgba(255, 229, 204, 0.48);
+    border-radius: 20px;
+    margin: 50px auto;
   }
 }
 @media screen and (max-width: 750px) {
