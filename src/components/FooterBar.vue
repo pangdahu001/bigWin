@@ -66,4 +66,17 @@ export default {
     }
   }
 }
+@media screen and (max-width: 750px) {
+  .footer {
+    padding-top: 50px;
+    height: 280px;
+    nav {
+      width: 80%;
+    }
+    .menu {
+      width: 100%;
+      margin: 40px 0;
+    }
+  }
+}
 </style>

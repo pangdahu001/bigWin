@@ -4,7 +4,7 @@
       <button v-if="!isConnected" @click="connect">Connect Wallet</button>
       <button v-else @click="disconnect" title="点击断开连接">
         {{
-          getAccount.substring(0, 8) +
+          getAccount.substring(0, 4) +
             '...' +
             getAccount.substring(getAccount.length - 6, getAccount.length)
         }}

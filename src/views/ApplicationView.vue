@@ -47,6 +47,22 @@
         </div>
       </div>
     </div>
+    <div class="app2 app3">
+      <div class="title">
+        <span>Total revenue</span>
+        <span>Capital</span>
+      </div>
+      <div class="info">
+        <div class="info-item">
+          <div class="info-item-title">总收入</div>
+          <div class="name">
+            <img src="@/assets/usdt.png" alt="" />
+            Time
+          </div>
+          <div class="val">2022 / 04 /22</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -66,17 +82,7 @@ export default {
   computed: {
     ...mapGetters(['getBalance', 'isConnected', 'allowanceVal'])
   },
-  mounted () {
-    // getAllowance(this.address, allowance => {
-    //   this.$set(this, 'allowance', allowance)
-    // })
-    // getBalance(this.address, Balance => {
-    //   let newBalance = new BigNumber(Balance)
-    //     .div(new BigNumber(10).pow(6))
-    //     .toString()
-    //   this.$set(this, 'Balance', newBalance)
-    // })
-  },
+  mounted () {},
   watch: {
     isConnected (newVal) {
       console.log(newVal)
@@ -86,13 +92,9 @@ export default {
   },
   methods: {
     approveFc () {
-      // approve(this.address)
       this.$store.dispatch('approve')
     },
     depositFc () {
-      // deposit('1100', transactionHash => {
-      //   console.log(transactionHash)
-      // })
       this.$store.dispatch('deposit', this.value)
     }
   }
@@ -171,6 +173,7 @@ export default {
           background: rgba(229, 206, 194, 0.48);
           border-radius: 6px;
           line-height: 46px;
+          cursor: pointer;
         }
       }
       .input {
@@ -211,6 +214,9 @@ export default {
       color: #fceace;
       text-align: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.36);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
     .info {
       margin-top: 30px;
@@ -218,8 +224,15 @@ export default {
       justify-content: flex-start;
       align-items: flex-start;
       .info-item {
+        .info-item-title {
+          font-size: 22px;
+          margin-bottom: 30px;
+        }
         .name {
           font-size: 22px;
+          img {
+            vertical-align: middle;
+          }
         }
         .val {
           margin-top: 30px;
@@ -234,24 +247,73 @@ export default {
     .app1 {
       flex-direction: column;
       .left {
-        width: 100%;
+        width: 95%;
+        margin: 0 auto;
         .item {
           width: 48%;
-          height: 48vw;
+          height: 33vw;
+          background: linear-gradient(-30deg, #f4d9bb, #b2845c);
+          border-radius: 20px;
+          padding: 15px 0;
+          .num {
+            margin-top: 15px;
+          }
         }
       }
       .right {
+        background: #ffe5cc;
+        border-radius: 20px;
+        padding: 30px 0;
+        color: #97623d;
+        .bigv {
+          display: none;
+        }
+        .token {
+          margin: 20px 0;
+        }
         .btns {
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
           width: 90%;
+          margin: 20px auto 30px;
+          .btn {
+            width: 76px;
+            background: linear-gradient(90deg, #7b4d24, #552f0e);
+            border-radius: 6px;
+            color: #ffe5cc;
+          }
+        }
+        .input {
+          input {
+            border: 1px solid #7a4c23;
+            border-radius: 6px;
+            color: #7a4c23;
+          }
         }
         .datemine {
           width: 90%;
+          background: linear-gradient(-45deg, #a46832, #e3af81);
+          border-radius: 15px;
+          color: #fceace;
         }
       }
     }
     .app2 {
-      margin-top: 20px;
+      margin: 20px 2.5% 0;
+      padding: 0 5%;
+      .title {
+        font-size: 16px;
+      }
+      .info .info-item {
+        .info-item-title {
+          font-size: 16px;
+        }
+        .name {
+          font-size: 16px;
+        }
+        .val {
+          font-size: 14px;
+        }
+      }
     }
   }
 }

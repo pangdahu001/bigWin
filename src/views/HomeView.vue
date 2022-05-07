@@ -109,9 +109,50 @@ export default {
   }
 }
 @media screen and (max-width: 750px) {
-  .home .part1 .btn-group > div {
-    font-size: 16px;
-    padding: 15px;
+  .home .part1 {
+    h1 {
+      margin: 40px 5%;
+    }
+    p {
+      margin: 0 5% 50px;
+    }
+    .btn-group {
+      width: 100%;
+      > div {
+        font-size: 16px;
+        padding: 10px 15px;
+        height: auto;
+      }
+    }
+    .part1-bg {
+      height: 119px;
+      background-size: 158%;
+      background-position-x: 50%;
+      background-position-y: -71%;
+    }
+  }
+  .home .part2 {
+    .title {
+      margin: 0 5%;
+    }
+    .content ul {
+      padding-right: 5%;
+      li {
+        width: 30%;
+        height: 33vw;
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .home {
+    .part3 {
+      width: 90%;
+      margin: 50px 5%;
+    }
   }
 }
 </style>

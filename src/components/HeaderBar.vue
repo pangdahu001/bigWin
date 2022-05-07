@@ -17,7 +17,7 @@
     </div>
     <div class="langContainer">
       <div class="lang">
-        <el-select v-model="lang" placeholder="请选择">
+        <el-select v-model="lang" placeholder="中英文切换">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -123,6 +123,7 @@ export default {
   left: 0;
   background: rgb(43 39 39 / 58%);
   display: block;
+  z-index: 5;
   > nav {
     width: 200px;
     height: 100%;
@@ -130,8 +131,31 @@ export default {
     padding: 30px;
     display: flex;
     flex-direction: column;
+    border-radius: 0 80px 80px 0;
+    box-sizing: border-box;
     a {
       color: #000;
+    }
+  }
+}
+@media screen and (max-width: 750px) {
+  .header {
+    padding: 20px 2%;
+    width: calc(100% - 4%);
+    .langContainer {
+      ::v-deep.el-select .el-input__inner {
+        font-size: 12px;
+        padding: 6px;
+      }
+
+      .lang {
+        width: 100px;
+      }
+    }
+    .moblie-menu {
+      i {
+        font-size: 33px;
+      }
     }
   }
 }
