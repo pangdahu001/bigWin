@@ -1,94 +1,104 @@
 <template>
   <div class="application">
-    <div class="app1">
-      <div class="left">
-        <div class="item" v-for="(item, i) in infoList" :key="i">
-          <div class="title">{{ item.name }}</div>
-          <div class="num">{{ item.value }}</div>
-        </div>
-      </div>
-      <div class="right">
-        <div class="bigv"></div>
-        <div class="zindex3">
-          <div class="title">ALL Wagers</div>
-          <div class="token">0 ETH</div>
-          <div class="bet">
-            0bets
+    <template v-if="isConnected">
+      <div class="app1">
+        <div class="left">
+          <div class="item" v-for="(item, i) in infoList" :key="i">
+            <div class="title">{{ item.name }}</div>
+            <div class="num">{{ item.value }}</div>
           </div>
-          <div class="btns">
-            <div class="btn" v-for="i in 4" :key="i" @click="depositValue = i">
-              {{ i }}USDT
+        </div>
+        <div class="right">
+          <div class="bigv"></div>
+          <div class="zindex3">
+            <div class="title">ALL Wagers</div>
+            <div class="token">0 ETH</div>
+            <div class="bet">
+              0bets
+            </div>
+            <div class="btns">
+              <div
+                class="btn"
+                v-for="i in 4"
+                :key="i"
+                @click="depositValue = i"
+              >
+                {{ i }}USDT
+              </div>
+            </div>
+            <div class="input">
+              <input type="text" :max="getBalance" v-model="depositValue" />
+              <p>your amout：{{ getBalance }}</p>
+            </div>
+            <div
+              v-if="allowanceVal && !allowanceVal.toNumber()"
+              class="datemine"
+              @click="approveFc"
+            >
+              datemine
+            </div>
+            <div v-else class="datemine" @click="depositFc">
+              deposit
             </div>
           </div>
-          <div class="input">
-            <input type="text" :max="getBalance" v-model="depositValue" />
-            <p>your amout：{{ getBalance }}</p>
-          </div>
-          <div
-            v-if="allowanceVal && !allowanceVal.toNumber()"
-            class="datemine"
-            @click="approveFc"
-          >
-            datemine
-          </div>
-          <div v-else class="datemine" @click="depositFc">
-            deposit
-          </div>
-        </div>
-        <!-- <span>{{ allowance.toNumber() }}</span> -->
-      </div>
-    </div>
-    <div class="app2">
-      <div class="title">Settement record</div>
-      <div class="info">
-        <div class="info-item">
-          <div class="name">Time</div>
-          <div class="val">2022 / 04 /22</div>
+          <!-- <span>{{ allowance.toNumber() }}</span> -->
         </div>
       </div>
-    </div>
-    <div class="app2 app3">
-      <div class="title">
-        <span>Total revenue</span>
-        <span>Capital</span>
+      <div class="app2">
+        <div class="title">Settement record</div>
+        <div class="info">
+          <div class="info-item">
+            <div class="name">Time</div>
+            <div class="val">2022 / 04 /22</div>
+          </div>
+        </div>
       </div>
-      <div class="info">
-        <div class="info-item">
-          <div class="info-item-title">总收入</div>
-          <div class="name">
-            <img src="@/assets/usdt.png" alt="" />
-            {{ getUserInfo[1] && getUserInfo[1].toNumber() }}
-          </div>
-          <div class="val">财富自由</div>
+      <div class="app2 app3">
+        <div class="title">
+          <span>Total revenue</span>
+          <span>Capital</span>
         </div>
-        <div class="info-item">
-          <div class="info-item-title">资本</div>
-          <div class="name">
-            <img src="@/assets/usdt.png" alt="" />
-            {{ getUserInfo[2] && getUserInfo[2].toNumber() }}
+        <div class="info">
+          <div class="info-item">
+            <div class="info-item-title">总收入</div>
+            <div class="name">
+              <img src="@/assets/usdt.png" alt="" />
+              {{ getUserInfo[1] && getUserInfo[1].toNumber() }}
+            </div>
+            <div class="val">财富自由</div>
           </div>
-          <div class="val">小额投资</div>
-        </div>
+          <div class="info-item">
+            <div class="info-item-title">资本</div>
+            <div class="name">
+              <img src="@/assets/usdt.png" alt="" />
+              {{ getUserInfo[2] && getUserInfo[2].toNumber() }}
+            </div>
+            <div class="val">小额投资</div>
+          </div>
 
-        <div class="info-item">
-          <div class="info-item-title">分红总额</div>
-          <div class="name">
-            <img src="@/assets/usdt.png" alt="" />
-            {{ getUserInfo[7] && getUserInfo[7].toNumber() }}
+          <div class="info-item">
+            <div class="info-item-title">分红总额</div>
+            <div class="name">
+              <img src="@/assets/usdt.png" alt="" />
+              {{ getUserInfo[7] && getUserInfo[7].toNumber() }}
+            </div>
+            <div class="val">不断积累</div>
           </div>
-          <div class="val">不断积累</div>
-        </div>
 
-        <div class="info-item">
-          <div class="info-item-title">奖励总额</div>
-          <div class="name">
-            <img src="@/assets/usdt.png" alt="" />
-            {{ getUserInfo[5] && getUserInfo[5].toNumber() }}
+          <div class="info-item">
+            <div class="info-item-title">奖励总额</div>
+            <div class="name">
+              <img src="@/assets/usdt.png" alt="" />
+              {{ getUserInfo[5] && getUserInfo[5].toNumber() }}
+            </div>
+            <div class="val">分享的力量</div>
           </div>
-          <div class="val">分享的力量</div>
         </div>
       </div>
-    </div>
+    </template>
+    <template v-else>
+      <p class="tips">请先连接钱包</p>
+    </template>
   </div>
 </template>
 
@@ -132,15 +142,16 @@ export default {
       return infoList
     }
   },
-  mounted () {
-    this.$store.dispatch('getNodeNumber')
-  },
+  mounted () {},
   watch: {
     isConnected (newVal) {
+      if (newVal) {
+        this.$store.dispatch('getBalance')
+        this.$store.dispatch('getAllowance')
+        this.$store.dispatch('getRound')
+        this.$store.dispatch('getNodeNumber')
+      }
       console.log(newVal)
-      this.$store.dispatch('getBalance')
-      this.$store.dispatch('getAllowance')
-      this.$store.dispatch('getRound')
     }
   },
   methods: {
@@ -299,6 +310,9 @@ export default {
       }
     }
   }
+}
+.tips {
+  text-align: center;
 }
 @media screen and (max-width: 750px) {
   .application {
