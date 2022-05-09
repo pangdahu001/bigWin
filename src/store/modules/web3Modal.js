@@ -1,6 +1,7 @@
 import { getLibrary } from '@/util/web3'
 import { ethers } from 'ethers'
 import { parseInt } from 'lodash'
+import { BigWinCont, tokenUsdtCont } from '../../util/contract'
 
 const web3ModalStore = {
   state: {
@@ -8,7 +9,9 @@ const web3ModalStore = {
     library: getLibrary(),
     active: false,
     account: null,
-    chainId: 0
+    chainId: 0,
+    BigWinContSigner: null,
+    usdtContSigner: null
   },
   mutations: {
     setWeb3Modal (state, web3Modal) {
@@ -22,6 +25,12 @@ const web3ModalStore = {
     },
     setAccount (state, account) {
       state.account = account
+    },
+    setBigWinContSigner (state, BigWinContSigner) {
+      state.BigWinContSigner = BigWinContSigner
+    },
+    setUsdtContSigner (state, usdtContSigner) {
+      state.usdtContSigner = usdtContSigner
     },
     setChainId (state, chainId) {
       state.chainId = chainId
@@ -39,6 +48,8 @@ const web3ModalStore = {
       const accounts = await library.listAccounts()
       if (accounts.length > 0) {
         commit('setAccount', accounts[0])
+        commit('setBigWinContSigner', BigWinCont(accounts[0]).contract)
+        commit('setUsdtContSigner', tokenUsdtCont(accounts[0]).contract)
       }
       const network = await library.getNetwork()
       commit('setChainId', network.chainId)

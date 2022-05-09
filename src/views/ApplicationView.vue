@@ -2,9 +2,9 @@
   <div class="application">
     <div class="app1">
       <div class="left">
-        <div class="item" v-for="i in 6" :key="i">
-          <div class="title">invitation code</div>
-          <div class="num">1</div>
+        <div class="item" v-for="(item, i) in infoList" :key="i">
+          <div class="title">{{ item.name }}</div>
+          <div class="num">{{ item.value }}</div>
         </div>
       </div>
       <div class="right">
@@ -16,12 +16,12 @@
             0bets
           </div>
           <div class="btns">
-            <div class="btn" v-for="i in 4" :key="i" @click="value = i">
+            <div class="btn" v-for="i in 4" :key="i" @click="depositValue = i">
               {{ i }}USDT
             </div>
           </div>
           <div class="input">
-            <input type="text" :max="getBalance" :value="value" />
+            <input type="text" :max="getBalance" v-model="depositValue" />
             <p>your amout：{{ getBalance }}</p>
           </div>
           <div
@@ -57,9 +57,35 @@
           <div class="info-item-title">总收入</div>
           <div class="name">
             <img src="@/assets/usdt.png" alt="" />
-            Time
+            {{ getUserInfo[1] && getUserInfo[1].toNumber() }}
           </div>
-          <div class="val">2022 / 04 /22</div>
+          <div class="val">财富自由</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-title">资本</div>
+          <div class="name">
+            <img src="@/assets/usdt.png" alt="" />
+            {{ getUserInfo[2] && getUserInfo[2].toNumber() }}
+          </div>
+          <div class="val">小额投资</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-title">分红总额</div>
+          <div class="name">
+            <img src="@/assets/usdt.png" alt="" />
+            {{ getUserInfo[7] && getUserInfo[7].toNumber() }}
+          </div>
+          <div class="val">不断积累</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-title">奖励总额</div>
+          <div class="name">
+            <img src="@/assets/usdt.png" alt="" />
+            {{ getUserInfo[5] && getUserInfo[5].toNumber() }}
+          </div>
+          <div class="val">分享的力量</div>
         </div>
       </div>
     </div>
@@ -76,18 +102,45 @@ export default {
     return {
       allowance: new BigNumber(0),
       Balance: '',
-      value: 0
+      depositValue: 0
     }
   },
   computed: {
-    ...mapGetters(['getBalance', 'isConnected', 'allowanceVal'])
+    ...mapGetters([
+      'getBalance',
+      'isConnected',
+      'allowanceVal',
+      'bigWinContract',
+      'getNodeNumber',
+      'getNodeLevel',
+      'getBeCode',
+      'getInviteCode',
+      'getUserInfo'
+    ]),
+    infoList () {
+      let infoList = [
+        { name: 'Invitation code', value: this.getInviteCode },
+        { name: 'Node number', value: this.getNodeNumber },
+        {
+          name: 'Level of share out bonus',
+          value: this.getUserInfo[10]?.toNumber()
+        },
+        { name: 'Node level', value: this.getNodeLevel },
+        { name: 'In toal', value: '' },
+        { name: 'The wallet balance', value: this.getBalance }
+      ]
+      return infoList
+    }
   },
-  mounted () {},
+  mounted () {
+    this.$store.dispatch('getNodeNumber')
+  },
   watch: {
     isConnected (newVal) {
       console.log(newVal)
       this.$store.dispatch('getBalance')
       this.$store.dispatch('getAllowance')
+      this.$store.dispatch('getRound')
     }
   },
   methods: {
@@ -95,7 +148,10 @@ export default {
       this.$store.dispatch('approve')
     },
     depositFc () {
-      this.$store.dispatch('deposit', this.value)
+      if (!this.depositValue) {
+        return
+      }
+      this.$store.dispatch('deposit', this.depositValue)
     }
   }
 }
@@ -196,6 +252,7 @@ export default {
         color: #494949;
         font-size: 26px;
         margin: 30px auto 0;
+        cursor: pointer;
       }
     }
   }
@@ -224,6 +281,7 @@ export default {
       justify-content: flex-start;
       align-items: flex-start;
       .info-item {
+        flex: 1;
         .info-item-title {
           font-size: 22px;
           margin-bottom: 30px;
