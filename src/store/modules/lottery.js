@@ -2,7 +2,7 @@ import web3ModalStore from './web3Modal'
 import { tokenUsdtCont, BigWinCont } from '../../util/contract'
 import { BigNumber } from 'bignumber.js'
 import { ethers } from 'ethers'
-
+import { Notification } from 'element-ui'
 const lotteryStore = {
   state: {
     usdtContract: tokenUsdtCont().contract,
@@ -65,40 +65,46 @@ const lotteryStore = {
     async deposit ({ state, commit }, value) {
       // console.log(web3ModalStore.state.BigWinContSigner)
       commit('setBetToFalse')
-      await web3ModalStore.state.BigWinContSigner?.estimateGas.deposit(
-        new BigNumber(value).times(new BigNumber(10).pow(6)).toString(),
-        state.inviteCode,
-        state.beCode
-      )
-      await web3ModalStore.state.BigWinContSigner.functions
-        .deposit(
+      try {
+        await web3ModalStore.state.BigWinContSigner?.estimateGas.deposit(
           new BigNumber(value).times(new BigNumber(10).pow(6)).toString(),
           state.inviteCode,
           state.beCode
         )
-        .send(
-          {
-            from: web3ModalStore.state.account
-          },
-          function (err, transactionHash) {
-            if (err) {
-              console.log(err, transactionHash)
-              state.loading = false
+        await web3ModalStore.state.BigWinContSigner.functions
+          .deposit(
+            new BigNumber(value).times(new BigNumber(10).pow(6)).toString(),
+            state.inviteCode,
+            state.beCode
+          )
+          .send(
+            {
+              from: web3ModalStore.state.account
+            },
+            function (err, transactionHash) {
+              if (err) {
+                console.log(err, transactionHash)
+
+                state.loading = false
+              }
+              state.loading = true
             }
-            state.loading = true
-          }
-        )
-        .on('confirmation', function (confirmationNumber, receipt) {
-          if (confirmationNumber > 1 && state.oneTimeFunction == false) {
-            state.oneTimeFunction = true // This function must be executed only once.
-            state.loading = false
-            state.confirmed = true
-            state.receipt = receipt
-            commit('addPlayer', receipt.from)
-            const balance = (Number(state.balance) + 0.1).toFixed(1)
-            commit('setBalance', balance)
-          }
-        })
+          )
+          .on('confirmation', function (confirmationNumber, receipt) {
+            if (confirmationNumber > 1 && state.oneTimeFunction == false) {
+              state.oneTimeFunction = true // This function must be executed only once.
+              state.loading = false
+              state.confirmed = true
+              state.receipt = receipt
+              commit('addPlayer', receipt.from)
+              const balance = (Number(state.balance) + 0.1).toFixed(1)
+              commit('setBalance', balance)
+            }
+          })
+      } catch (error) {
+        console.log(error)
+        Notification.error(error.data.message || 'failed')
+      }
     },
     async getPlayers ({ state }) {
       const players = await state.contract.methods.getPlayers().call()
@@ -153,7 +159,7 @@ const lotteryStore = {
     },
     async approve ({ state, commit }) {
       commit('setBetToFalse')
-      console.log(web3ModalStore.state.usdtContSigner)
+      // console.log(web3ModalStore.state.usdtContSigner.functions.approve)
       // let gas = await state.usdtContract.methods
       //   .approve(state.bigWinContract?.address, ethers.constants.MaxUint256)
       //   .estimateGas()web3ModalStore.state.BigWinContSigner
@@ -161,14 +167,13 @@ const lotteryStore = {
         state.bigWinContract?.address,
         ethers.constants.MaxUint256
       )
-
-      await web3ModalStore.state.usdtContSigner.functions.approve(
-        state.bigWinContract?.address,
-        ethers.constants.MaxUint256,
-        {
+      await web3ModalStore.state.usdtContSigner.functions
+        .approve(state.bigWinContract?.address, ethers.constants.MaxUint256, {
           gasLimit: gas
-        }
-      )
+        })
+        .then(receipt => {
+          console.log(receipt)
+        })
     },
     async getContractBalance ({ commit, state }) {
       console.log(BigWinCont().web3)

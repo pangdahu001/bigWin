@@ -28,8 +28,9 @@
             </div>
             <div class="input">
               <input type="text" :max="getBalance" v-model="depositValue" />
-              <p>your amout：{{ getBalance }}</p>
+              <p>Your Amout</p>
             </div>
+            <!--  -->
             <div
               v-if="allowanceVal && !allowanceVal.toNumber()"
               class="datemine"
@@ -63,7 +64,7 @@
             <div class="info-item-title">总收入</div>
             <div class="name">
               <img src="@/assets/usdt.png" alt="" />
-              {{ getUserInfo[1] && getUserInfo[1].toNumber() }}
+              {{ TotalRevenue }}
             </div>
             <div class="val">财富自由</div>
           </div>
@@ -80,7 +81,7 @@
             <div class="info-item-title">分红总额</div>
             <div class="name">
               <img src="@/assets/usdt.png" alt="" />
-              {{ getUserInfo[7] && getUserInfo[7].toNumber() }}
+              {{ getUserInfo[5] && getUserInfo[5].toNumber() }}
             </div>
             <div class="val">不断积累</div>
           </div>
@@ -89,7 +90,7 @@
             <div class="info-item-title">奖励总额</div>
             <div class="name">
               <img src="@/assets/usdt.png" alt="" />
-              {{ getUserInfo[5] && getUserInfo[5].toNumber() }}
+              {{ getUserInfo[7] && getUserInfo[7].toNumber() }}
             </div>
             <div class="val">分享的力量</div>
           </div>
@@ -112,7 +113,7 @@ export default {
     return {
       allowance: new BigNumber(0),
       Balance: '',
-      depositValue: 0
+      depositValue: ''
     }
   },
   computed: {
@@ -130,26 +131,44 @@ export default {
     infoList () {
       let infoList = [
         { name: 'Invitation code', value: this.getInviteCode },
-        { name: 'Node number', value: this.getNodeNumber },
+        { name: 'Node number', value: this.getNodeNumber }, // 邀请人数
         {
           name: 'Level of share out bonus',
           value: this.getUserInfo[10]?.toNumber()
         },
-        { name: 'Node level', value: this.getNodeLevel },
+        { name: 'Node level', value: this.getUserInfo[10]?.toNumber() },
         { name: 'In toal', value: '' },
         { name: 'The wallet balance', value: this.getBalance }
       ]
       return infoList
+    },
+    TotalRevenue () {
+      if (this.getUserInfo[4] && BigNumber.isBigNumber(this.getUserInfo[4])) {
+        console.log(this.getUserInfo[4])
+        // return new BigNumber(this.getUserInfo[4].toNumber())
+        //   .plus(new BigNumber(this.getUserInfo[5].toNumber()))
+        //   .toNumber()
+
+        return this.getUserInfo[4].add(this.getUserInfo[5]).toNumber()
+      } else {
+        return 0
+      }
     }
   },
-  mounted () {},
+  mounted () {
+    if (this.isConnected) {
+      this.$store.dispatch('getBalance')
+      this.$store.dispatch('getAllowance')
+      this.$store.dispatch('getRound')
+    }
+  },
   watch: {
     isConnected (newVal) {
       if (newVal) {
         this.$store.dispatch('getBalance')
         this.$store.dispatch('getAllowance')
         this.$store.dispatch('getRound')
-        this.$store.dispatch('getNodeNumber')
+        // this.$store.dispatch('getNodeNumber')
       }
       console.log(newVal)
     }
@@ -160,7 +179,7 @@ export default {
     },
     depositFc () {
       if (!this.depositValue) {
-        return
+        return this.$notify.error('请输入金额')
       }
       this.$store.dispatch('deposit', this.depositValue)
     }
