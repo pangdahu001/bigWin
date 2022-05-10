@@ -113,7 +113,7 @@
 // import { approve, deposit } from '../abi/send'
 import { mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
-
+// import { inviteCode } from '@/util/code.js'
 export default {
   data () {
     return {

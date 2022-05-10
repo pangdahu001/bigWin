@@ -16,8 +16,11 @@
       <i class="el-icon-s-fold"></i>
     </div>
     <div class="langContainer">
+      <div class="share" v-if="getInviteCode">
+        <i class="el-icon-share" @click="onCopy()"></i>
+      </div>
       <div class="lang">
-        <el-select v-model="lang" placeholder="中英文切换">
+        <el-select v-model="lang" placeholder="语言">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -35,6 +38,7 @@
 <script>
 import { IsMobile } from '../util'
 import WalletConnect from '@/components/WalletConnect.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -54,6 +58,9 @@ export default {
   },
   components: { WalletConnect },
   mounted () {},
+  computed: {
+    ...mapGetters(['getInviteCode'])
+  },
   methods: {
     showMenu () {
       this.moblieMenu = !this.moblieMenu
@@ -62,6 +69,15 @@ export default {
       if (e.target.nodeName == 'DIV') {
         this.moblieMenu = false
       }
+    },
+    onCopy () {
+      this.$copyText(window.location.origin + '/?code=' + this.getInviteCode)
+        .then(() => {
+          this.$message.success({ message: '邀请链接复制到剪切板' })
+        })
+        .catch(() => {
+          this.$message.error({ message: '邀请链接复制失败' })
+        })
     }
   }
 }
@@ -138,6 +154,10 @@ export default {
     }
   }
 }
+.share {
+  font-size: 33px;
+  margin-right: 10px;
+}
 @media screen and (max-width: 750px) {
   .header {
     padding: 20px 2%;
@@ -149,7 +169,7 @@ export default {
       }
 
       .lang {
-        width: 100px;
+        width: 70px;
       }
     }
     .moblie-menu {

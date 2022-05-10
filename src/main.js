@@ -6,6 +6,9 @@ import store from './store'
 import i18n from './i18n' //
 import './Element'
 // import Web3 from 'web3'
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard)
 
 Vue.config.productionTip = false
 

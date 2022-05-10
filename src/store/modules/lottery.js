@@ -3,6 +3,21 @@ import { tokenUsdtCont, BigWinCont } from '../../util/contract'
 import { BigNumber } from 'bignumber.js'
 import { ethers } from 'ethers'
 import { Notification } from 'element-ui'
+import { inviteCode, getUrlKey } from '@/util/code.js'
+
+async function getInviteCodeTrue (currentBigWin, commit) {
+  let currentCode = inviteCode()
+  let [isUsed] = await currentBigWin.functions.isUsed(currentCode)
+  // console.log(isUsed)
+  if (!isUsed) {
+    commit('setStateKey', {
+      key: 'inviteCode',
+      value: currentCode
+    })
+  } else {
+    getInviteCodeTrue(currentBigWin, commit)
+  }
+}
 const lotteryStore = {
   state: {
     usdtContract: tokenUsdtCont().contract,
@@ -217,11 +232,20 @@ const lotteryStore = {
 
       console.log(contractInfo)
       commit('setStateKey', { key: 'userInfo', value: contractInfo.info })
-      commit('setStateKey', { key: 'beCode', value: contractInfo.beCode })
-      commit('setStateKey', {
-        key: 'inviteCode',
-        value: contractInfo.inviteCode
-      })
+      if (contractInfo.beCode) {
+        commit('setStateKey', { key: 'beCode', value: contractInfo.beCode })
+      } else {
+        let beCode = getUrlKey('code')
+        commit('setStateKey', { key: 'beCode', value: beCode })
+      }
+      if (contractInfo.inviteCode) {
+        commit('setStateKey', {
+          key: 'inviteCode',
+          value: contractInfo.inviteCode
+        })
+      } else {
+        getInviteCodeTrue(currentBigWin.contract, commit)
+      }
     },
     getNodeNumber ({ commit, dispatch, state }) {
       if (state.NodeNumber) {
