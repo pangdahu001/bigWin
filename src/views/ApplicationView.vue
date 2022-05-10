@@ -19,7 +19,7 @@
             <div class="btns">
               <div
                 class="btn"
-                v-for="i in 4"
+                v-for="i in [1100, 1500, 2000, 2500]"
                 :key="i"
                 @click="depositValue = i"
               >
@@ -163,7 +163,7 @@ export default {
     },
     withdrawDisabled () {
       // console.log(new BigNumber(this.getUserInfo[9].toNumber()).toString())
-      return new BigNumber(this.getUserInfo[9].toNumber()).isLessThanOrEqualTo(
+      return new BigNumber(this.getUserInfo[9]?.toNumber()).isLessThanOrEqualTo(
         5
       )
     }
@@ -352,6 +352,7 @@ export default {
           text-align: center;
           padding: 0 20px;
           &.is-disabled {
+            background: #ccc;
           }
         }
       }
@@ -392,7 +393,8 @@ export default {
         }
         .btns {
           flex-wrap: nowrap;
-          width: 90%;
+          width: 94%;
+          font-size: 14px;
           margin: 20px auto 30px;
           .btn {
             width: 76px;
@@ -431,6 +433,16 @@ export default {
         }
         .val {
           font-size: 14px;
+        }
+      }
+    }
+    .app3 {
+      .info {
+        flex-wrap: wrap;
+        .info-item {
+          flex: 40%;
+          text-align: center;
+          margin-bottom: 20px;
         }
       }
     }
