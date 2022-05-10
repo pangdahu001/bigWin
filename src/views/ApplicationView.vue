@@ -72,9 +72,15 @@
             <div class="info-item-title">资本</div>
             <div class="name">
               <img src="@/assets/usdt.png" alt="" />
-              {{ getUserInfo[2] && getUserInfo[2].toNumber() }}
+              {{ getUserInfo[3] && getUserInfo[3].div(100000).toNumber() }}
             </div>
             <div class="val">小额投资</div>
+            <el-button
+              class="btn"
+              @click="withdraw"
+              :disabled="withdrawDisabled"
+              >提现</el-button
+            >
           </div>
 
           <div class="info-item">
@@ -113,7 +119,8 @@ export default {
     return {
       allowance: new BigNumber(0),
       Balance: '',
-      depositValue: ''
+      depositValue: '',
+      fWei: new BigNumber(10).pow(6)
     }
   },
   computed: {
@@ -153,6 +160,12 @@ export default {
       } else {
         return 0
       }
+    },
+    withdrawDisabled () {
+      // console.log(new BigNumber(this.getUserInfo[9].toNumber()).toString())
+      return new BigNumber(this.getUserInfo[9].toNumber()).isLessThanOrEqualTo(
+        5
+      )
     }
   },
   mounted () {
@@ -182,6 +195,9 @@ export default {
         return this.$notify.error('请输入金额')
       }
       this.$store.dispatch('deposit', this.depositValue)
+    },
+    withdraw () {
+      this.$store.dispatch('withdraw')
     }
   }
 }
@@ -325,6 +341,18 @@ export default {
         .val {
           margin-top: 30px;
           font-size: 18px;
+        }
+        .btn {
+          height: 40px;
+          background: linear-gradient(-45deg, #fceace, #e3af81);
+          border-radius: 15px;
+          display: inline-block;
+          color: #494949;
+          line-height: 40px;
+          text-align: center;
+          padding: 0 20px;
+          &.is-disabled {
+          }
         }
       }
     }

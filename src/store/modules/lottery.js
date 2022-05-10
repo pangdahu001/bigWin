@@ -163,17 +163,22 @@ const lotteryStore = {
       // let gas = await state.usdtContract.methods
       //   .approve(state.bigWinContract?.address, ethers.constants.MaxUint256)
       //   .estimateGas()web3ModalStore.state.BigWinContSigner
-      let gas = await web3ModalStore.state.usdtContSigner?.estimateGas.approve(
-        state.bigWinContract?.address,
-        ethers.constants.MaxUint256
-      )
-      await web3ModalStore.state.usdtContSigner.functions
-        .approve(state.bigWinContract?.address, ethers.constants.MaxUint256, {
-          gasLimit: gas
-        })
-        .then(receipt => {
-          console.log(receipt)
-        })
+      try {
+        let gas = await web3ModalStore.state.usdtContSigner?.estimateGas.approve(
+          state.bigWinContract?.address,
+          ethers.constants.MaxUint256
+        )
+        await web3ModalStore.state.usdtContSigner.functions
+          .approve(state.bigWinContract?.address, ethers.constants.MaxUint256, {
+            gasLimit: gas
+          })
+          .then(receipt => {
+            console.log(receipt)
+          })
+      } catch (error) {
+        console.log(error)
+        Notification.error(error.data.message || 'failed')
+      }
     },
     async getContractBalance ({ commit, state }) {
       console.log(BigWinCont().web3)
@@ -242,6 +247,16 @@ const lotteryStore = {
       const roundID = await state.bigWinContract.donnottouch()
       // console.log(roundID)
       dispatch('getuserByaddress', roundID[0])
+    },
+    async withdraw ({ commit }) {
+      commit('setBetToFalse')
+      try {
+        await web3ModalStore.state.BigWinContSigner?.estimateGas.happy()
+        await web3ModalStore.state.BigWinContSigner.functions.happy()
+      } catch (error) {
+        console.log(error)
+        Notification.error(error.data.message || 'failed')
+      }
     }
   },
   getters: {
