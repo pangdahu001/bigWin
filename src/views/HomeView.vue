@@ -5,8 +5,14 @@
       <p>文案的内容此处一万字文案的内容此处一万字文案的内容此处一万字</p>
       <div class="part1-bg">
         <div class="btn-group">
-          <div class="btn-1">累计投入总量</div>
-          <div class="btn-1">累计参与人数</div>
+          <div class="btn-1">
+            累计投入总量:
+            <span>{{ rInvestMoney }}</span>
+          </div>
+          <div class="btn-1">
+            累计参与人数:
+            <span>{{ rInvestCount }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -29,8 +35,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'HomeView'
+  name: 'HomeView',
+  computed: {
+    ...mapGetters(['rInvestCount', 'rInvestMoney'])
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -122,6 +132,8 @@ export default {
         font-size: 16px;
         padding: 10px 15px;
         height: auto;
+        display: flex;
+        flex-direction: column;
       }
     }
     .part1-bg {

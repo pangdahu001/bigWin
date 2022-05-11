@@ -54,6 +54,7 @@ const web3ModalStore = {
       const network = await library.getNetwork()
       commit('setChainId', network.chainId)
       commit('setActive', true)
+      dispatch('getRound')
 
       provider.on('connect', async info => {
         let chainId = parseInt(info.chainId)

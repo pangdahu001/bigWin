@@ -16,8 +16,13 @@
       <i class="el-icon-s-fold"></i>
     </div>
     <div class="langContainer">
-      <div class="share" v-if="getInviteCode">
-        <i class="el-icon-share" @click="onCopy()"></i>
+      <div
+        class="share"
+        v-if="getInviteCode && $route.name == 'application'"
+        @click="onCopy()"
+      >
+        <i class="el-icon-share"></i>
+        邀请链接
       </div>
       <div class="lang">
         <el-select v-model="lang" placeholder="语言">
@@ -115,6 +120,7 @@ export default {
   }
   .lang {
     margin-right: 10px;
+    width: 100px;
   }
 }
 .hidden {
@@ -155,8 +161,16 @@ export default {
   }
 }
 .share {
-  font-size: 33px;
+  i {
+    font-size: 33px;
+    // margin-right: 10px;
+  }
   margin-right: 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
 }
 @media screen and (max-width: 750px) {
   .header {
@@ -177,6 +191,9 @@ export default {
         font-size: 33px;
       }
     }
+  }
+  .share {
+    width: 70px;
   }
 }
 </style>

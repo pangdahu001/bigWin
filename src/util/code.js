@@ -1,4 +1,5 @@
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+// var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 var codeLength = 6 //单个code长度
 
 var generateRandomNum = function (min, max) {

@@ -6,6 +6,14 @@ import { Notification } from 'element-ui'
 import { inviteCode, getUrlKey } from '@/util/code.js'
 
 async function getInviteCodeTrue (currentBigWin, commit) {
+  let storageCode = window.localStorage.getItem('inviteCode')
+  if (storageCode) {
+    commit('setStateKey', {
+      key: 'inviteCode',
+      value: storageCode
+    })
+    return storageCode
+  }
   let currentCode = inviteCode()
   let [isUsed] = await currentBigWin.functions.isUsed(currentCode)
   // console.log(isUsed)
@@ -14,6 +22,7 @@ async function getInviteCodeTrue (currentBigWin, commit) {
       key: 'inviteCode',
       value: currentCode
     })
+    window.localStorage.setItem('inviteCode', currentCode)
   } else {
     getInviteCodeTrue(currentBigWin, commit)
   }
@@ -36,7 +45,9 @@ const lotteryStore = {
     NodeLevel: '',
     inviteCode: '',
     beCode: '',
-    userInfo: []
+    userInfo: [],
+    rInvestCount: 0,
+    rInvestMoney: 0
   },
   mutations: {
     setContract (state, contract) {
@@ -267,10 +278,19 @@ const lotteryStore = {
       commit('setNodeLevel', contractBalance[0].toNumber())
     },
     async getBonus () {},
-    async getRound ({ dispatch, state }) {
+    async getRound ({ dispatch, state, commit }) {
       const roundID = await state.bigWinContract.donnottouch()
-      // console.log(roundID)
+      console.log(roundID[3])
       dispatch('getuserByaddress', roundID[0])
+      // rInvestMoney
+      commit('setStateKey', {
+        key: 'rInvestCount',
+        value: roundID[3].toNumber()
+      })
+      commit('setStateKey', {
+        key: 'rInvestMoney',
+        value: roundID[4].toNumber()
+      })
     },
     async withdraw ({ commit }) {
       commit('setBetToFalse')
@@ -296,7 +316,9 @@ const lotteryStore = {
     bigWinContract: state => state.bigWinContract,
     getBeCode: state => state.beCode,
     getInviteCode: state => state.inviteCode,
-    getUserInfo: state => state.userInfo
+    getUserInfo: state => state.userInfo,
+    rInvestCount: state => state.rInvestCount,
+    rInvestMoney: state => state.rInvestMoney
   }
 }
 

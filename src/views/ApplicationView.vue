@@ -12,14 +12,14 @@
           <div class="bigv"></div>
           <div class="zindex3">
             <div class="title">ALL Wagers</div>
-            <div class="token">0 ETH</div>
+            <div class="token">0 USDT</div>
             <div class="bet">
               0bets
             </div>
             <div class="btns">
               <div
                 class="btn"
-                v-for="i in [1100, 1500, 2000, 2500]"
+                v-for="i in [100, 1100, 2100, 3000]"
                 :key="i"
                 @click="depositValue = i"
               >
