@@ -6,6 +6,10 @@
       @click="hiddenMenu"
     >
       <nav>
+        <div class="logo">
+          <img v-if="IsMobile" src="@/assets/logo-black.png" alt="" />
+          <img v-else src="@/assets/logo.png" alt="" />
+        </div>
         <router-link to="/">首页</router-link>
         <router-link to="/application">应用</router-link>
         <!-- <router-link to="/application">规则</router-link> -->
@@ -99,7 +103,20 @@ export default {
   padding: 20px;
   position: relative;
   z-index: 3;
+  .logo {
+    width: 50px;
+    display: inline-block;
+    margin-right: 20px;
+    > img {
+      display: block;
+      width: 100%;
+    }
+  }
   nav {
+    line-height: 50px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     a {
       text-decoration: none;
       color: rgb(229 206 194 / 40%);
